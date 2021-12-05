@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+
+{% block app_content %}
+<div id="life_count" class="counter" >{{ life.count }}</div>
+<a class="btn btn-warning home" href="{{ url_for('index') }}" > На главную </a>
+<a class="btn btn-info refresh" href="{{ url_for('live') }}" > Создать новую жизнь </a>
+<table id="new_world" class="world">
+    {%for i in range(life.world|length) %}
+        <tr>
+        {%for j in range(life.world|length) %}
+            {% if life.world[i][j] == 1 %}
+                <td class="cell living-cell"></td>
+            {% elif life.old_world[i][j] != life.world[i][j] and life.old_world[i][j] == 1  %}
+                <td class="cell dead-cell"></td>
+            {% else %}
+                <td class="cell"></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+
+
+{% block scripts %}
+{{super()}}
+
+<!"импорт библиотеки jquery">
+<script type=text/javascript src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+
+<!Функция повторения с интервалом 1сек выполняет Ajax функцию, которая делает запрос к '/update_live'
+и обновляет данные счётчика и таблицы>
+<script>
+$(function(){
+window.setInterval(function(){
+updateLife()
+}, 1000)
+function updateLife(){
+    $.ajax({
+        url: '/update_live',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+        $(life_count).replaceWith(data['count'])
+        $(new_world).replaceWith(data['new_world'])
+        }
+    });
+}
+});
+</script>
+{% endblock %}

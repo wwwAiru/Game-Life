@@ -18,7 +18,7 @@ def index():
 @app.route('/live')
 def live():
     life = GameOfLife()
-    if life.count >= 0:
+    if life.count > 0:
         life.form_new_generation()
     return render_template('live.html', life=life)
 
@@ -30,23 +30,21 @@ def update_live():
     if request.method == 'GET':
         new_world = ''
         life = GameOfLife()
-        if life.count >= 0:
-            life.form_new_generation()
-
+        life.form_new_generation()
             #в цикле формируется строка из тегов для создания строк и ячеек новой таблицы
-            for i in range(len(life.world)):
-                new_world += '<tr>'
-                for j in range(len(life.world)):
-                    if life.world[i][j] == 1:
-                        new_world += '<td class="cell living-cell"></td>'
-                    elif life.old_world[i][j] != life.world[i][j] and life.old_world[i][j] == 1:
-                        new_world += '<td class="cell dead-cell"></td>'
-                    else:
-                        new_world += '<td class="cell"></td>'
+        for i in range(len(life.world)):
+            new_world += '<tr>'
+            for j in range(len(life.world)):
+                if life.world[i][j] == 1:
+                    new_world += '<td class="cell living-cell"></td>'
+                elif life.world[i][j] == 0 and life.old_world[i][j] :
+                    new_world += '<td class="cell dead-cell"></td>'
+                else:
+                    new_world += '<td class="cell"></td>'
 
             #тут важно сформировать таблицу такую же как в live.html
             #поэтому не забыть id по которому ajax запрос заменяет данные в live.html
-            new_world = f'<table id="new_world" class="world"> {new_world} </table>'
+        new_world = f'<table id="new_world" class="world"> {new_world} </table>'
             #возвращаем отджесониный словарь со счётчиком поколений и таблицей мира
     return jsonify({'count': f'<div id="life_count" class="counter" >{ life.count }</div>', 'new_world': new_world })
 

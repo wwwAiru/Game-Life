@@ -7,19 +7,19 @@
 <a class="btn btn-warning home" href="{{ url_for('index') }}" > На главную </a>
 <a class="btn btn-info refresh" href="{{ url_for('live') }}" > Создать новую жизнь </a>
 <table id="new_world" class="world">
-    {%for i in range(life.world|length) %}
+   {% for i in range(life.world|length) %}
         <tr>
-        {%for j in range(life.world|length) %}
-            {% if life.world[i][j] == 1 %}
-                <td class="cell living-cell"></td>
-            {% elif life.old_world[i][j] != life.world[i][j] and life.old_world[i][j] == 1  %}
-                <td class="cell dead-cell"></td>
-            {% else %}
-                <td class="cell"></td>
-            {% endif %}
+            {% for j in range(life.world[i]|length) %}
+                {% if life.world[i][j] %}
+                    <td class="cell living-cell"></td>
+                {% elif life.world[i][j] == 0 and life.old_world[i][j]%}
+                    <td class="cell dead-cell"></td>
+                {% else %}
+                    <td class="cell"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
 </table>
 {% endblock %}
 

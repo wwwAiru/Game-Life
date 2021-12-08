@@ -3,7 +3,7 @@
 
 {% block app_content %}
 
-<p>Стороны должны быть равны,<br> поля не должны быть пустыми,<br> иначе будут размеры 20 х 20</p>
+<p>Поля не должны быть пустыми,<br> иначе будут размеры 20 х 20</p>
     <form class="input_form" method="POST">
 
         <div>
@@ -14,11 +14,8 @@
            <label for="height">Введите размер поля по вертикали </label>
            <input type="number" name="height" id="height" >
         </p>
-
         </div>
-        <button class="btn btn-primary" type="submit"> Задать размер  </button>
+        <button class="btn btn-primary" type="submit"> Создать жизнь </button>
     </form>
-
-<a class="btn btn-primary" href="{{ url_for('live') }}"> Создать жизнь </a>
 
 {% endblock %}

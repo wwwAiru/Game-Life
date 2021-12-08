@@ -29,26 +29,28 @@
 {{super()}}
 
 <!"импорт библиотеки jquery">
-<script type=text/javascript src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
 
-<!Функция повторения с интервалом 1сек выполняет Ajax функцию, которая делает запрос к '/update_live'
-и обновляет данные счётчика и таблицы>
 <script>
-$(function(){
-window.setInterval(function(){
-updateLife()
-}, 1000)
-function updateLife(){
+$(document).ready(function() {
+    setInterval(refresher, 1000);
+});
+
+function refresher(){
     $.ajax({
-        url: '/update_live',
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-        $(life_count).replaceWith(data['count'])
-        $(new_world).replaceWith(data['new_world'])
+        url: '/live',
+        method: "GET",
+        dataType: 'html',
+        success: function(response) {
+            var htmlObject = $(response); // jquery call
+            document.getElementById('life_count').innerHTML = htmlObject.find('#life_count')[0].innerHTML; // обновление счётчика
+            document.getElementById('new_world').innerHTML = htmlObject.find('#new_world')[0].innerHTML;  // обновление таблицы
+        },
+        error: function(xhr, status, error) {
+            alert(xhr.responseText);
+            alert(error);
         }
     });
 }
-});
 </script>
 {% endblock %}

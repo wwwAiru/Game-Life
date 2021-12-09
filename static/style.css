@@ -34,7 +34,7 @@ td {
     flex-direction: column;
 }
 
-a, table {
+a {
     position: absolute;
     top: 50%;
     left: 50%;
